@@ -30,11 +30,15 @@ main = do
 
 runMain :: IO ()
 runMain = do
-  l2c <- stdinLines $$ countLines
-  let orderedL2c = sortOn (snd) $ Map.toList l2c
+  hSetBinaryMode stdin True
+  hSetBuffering stdin (BlockBuffering Nothing)
 
   hSetBinaryMode stdout True
   hSetBuffering stdout (BlockBuffering Nothing)
+
+  l2c <- stdinLines $$ countLines
+  let orderedL2c = sortOn (snd) $ Map.toList l2c
+
 
   forM_ orderedL2c $ \(l,c) -> do
     BSB.hPutBuilder stdout $ (BSB.integerDec c) <> (BSB.byteString "\t") <> (BSB.byteString l) <> (BSB.byteString "\n")
