@@ -41,11 +41,11 @@ runMain = do
 
 
   forM_ orderedL2c $ \(l,c) -> do
-    BSB.hPutBuilder stdout $ (BSB.integerDec c) <> (BSB.byteString "\t") <> (BSB.byteString l) <> (BSB.byteString "\n")
+    BSB.hPutBuilder stdout $ (BSB.wordDec c) <> (BSB.byteString "\t") <> (BSB.byteString l) <> (BSB.byteString "\n")
 
 
 countLines :: (MonadIO m)
-           => Consumer ByteString m (Map ByteString Integer)
+           => Consumer ByteString m (Map ByteString Word)
 countLines = CL.fold addLine Map.empty
   where addLine !l2c !l = Map.insertWith (+) l 1 l2c
 
